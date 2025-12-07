@@ -2,7 +2,6 @@ const express = require("express");
 const path = require("path");
 const app = express();
 
-// DB
 const { connectToMongoDB } = require("./connect");
 const urlRouter = require("./route/url");
 const URL = require("./model/url");
@@ -19,15 +18,15 @@ app.set("views", path.join(__dirname, "view"));
 
 // Connect to DB
 connectToMongoDB("mongodb://localhost:27017/shorturl")
-  .then(() => console.log("✅ MongoDB connected"))
-  .catch((err) => console.log("❌ DB error:", err.message));
+  .then(() => console.log(" MongoDB connected"))
+  .catch((err) => console.log(" DB error:", err.message));
 
 // Home page — show all URLs + form
-app.get("/", async (req, res) => {
-  try {
+app.get("/", async (req, res) =>{
+  try{
     const allURL = await URL.find({});
     res.render("home", { allURL });
-  } catch (err) {
+  } catch (err){
     res.status(500).send("Server Error");
   }
 });
@@ -36,11 +35,11 @@ app.get("/", async (req, res) => {
 app.use("/url", urlRouter);
 
 // Redirect
-app.get("/:shortId", async (req, res) => {
-  try {
+app.get("/:shortId", async (req, res)=>{
+  try{
     const entry = await URL.findOne({ shortId: req.params.shortId });
 
-    if (!entry) return res.status(404).send("Short URL not found");
+    if(!entry) return res.status(404).send("Short URL not found");
 
     entry.visitHistory.push({ timestamp: Date.now() });
     await entry.save();
@@ -52,8 +51,8 @@ app.get("/:shortId", async (req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
+app.listen(PORT,()=>{
+  console.log(`Server running at http://localhost:${PORT}`);
 });
 
 module.exports = app;
