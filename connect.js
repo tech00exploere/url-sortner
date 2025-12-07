@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 
 async function connectToMongoDB(url){
   try{
-    await mongoose.connect(url);   // modern Mongoose no longer needs extra options
+    await mongoose.connect(url);   // modern Mongoose no longer needs extra option
     console.log("Connected to MongoDB");
-  } catch (err){
+  }catch (err){
     console.error("MongoDB connection error:", err.message);
     process.exit(1);
   }
